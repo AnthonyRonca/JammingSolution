@@ -3,6 +3,7 @@ import "./App.css";
 import SearchBar from "../SearchBar/ SearchBar";
 import Playlist from "../Playlist/Playlist";
 import SearchResults from "../SearchResults/SearchResults";
+import Spotify from "../../util/Spotify";
 
 class App extends React.Component {
   constructor(props) {
@@ -89,8 +90,9 @@ class App extends React.Component {
     const trackURIs = this.state.playlistTracks.map((track) => track.uri);
   }
   search(criteria) {
-    console.log(criteria);
-    // Open hook for Spotify API
+    Spotify.search(criteria).then((searchResults) => {
+      this.setState({ searchResults: searchResults });
+    });
   }
   updateSearchResults() {}
   render() {
@@ -100,7 +102,7 @@ class App extends React.Component {
           Ja<span className="highlight">mmm</span>ing
         </h1>
         <div className="App">
-          <SearchBar onSearch={this.search}/>
+          <SearchBar onSearch={this.search} />
           <div className="App-playlist">
             <SearchResults
               searchResults={this.state.searchResults}
